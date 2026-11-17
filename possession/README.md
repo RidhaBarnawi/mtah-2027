@@ -1,6 +1,6 @@
 # Our entry: who has the ball, frame by frame
 
-Team **TEAM_NAME** — More than a Hack 2027, Phase 1.
+Team **NRZ Ace** — More than a Hack 2027, Phase 1.
 
 This folder is our program. Everything else in the repository is the organisers' starter kit,
 unchanged, plus `practice/`, the practice exam we chose our settings on.
@@ -16,14 +16,14 @@ source .venv/bin/activate
 pip install -r possession/requirements.txt
 
 # Unpack the competition bundle into ./data, or point MTAH_DATA_DIR at it
-python possession/make_submission.py --no-cache --out evaluation/results/TEAM_NAME.csv
-python evaluation/validate_submission.py evaluation/results/TEAM_NAME.csv
+python possession/make_submission.py --no-cache --out "evaluation/results/NRZ Ace.csv"
+python evaluation/validate_submission.py "evaluation/results/NRZ Ace.csv"
 ```
 
 It takes a minute or two on a laptop, with no GPU. There is no randomness: the same data gives
 the same file, byte for byte. SHA-256 of the file we submitted:
 
-    SUBMISSION_SHA256
+    4056bae7d48f5140ed2b69699ab1c0d6da02f6acd3e7d03cbe74a586ec4ef0d1
 
 ## How it works
 

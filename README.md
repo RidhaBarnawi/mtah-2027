@@ -1,4 +1,4 @@
-> **Team TEAM_NAME's entry.** Our program is in [`possession/`](possession/README.md): how it
+> **Team NRZ Ace's entry.** Our program is in [`possession/`](possession/README.md): how it
 > works, and the commands that regenerate our submission. [`practice/`](practice/README.md) is
 > the practice exam we chose our settings on. Everything below, and every other file, is the
 > organisers' starter kit, unchanged.

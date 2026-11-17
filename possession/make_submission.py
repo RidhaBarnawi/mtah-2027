@@ -1,13 +1,14 @@
 """Write the submission for the competition match: tracking -> signals -> decoder -> CSV.
 
-    python possession/make_submission.py               # writes evaluation/results/decoder_v1.csv
+    python possession/make_submission.py               # writes evaluation/results/submission.csv
     python possession/make_submission.py --out PATH
+    python possession/make_submission.py --no-cache    # read the raw tracking again, as a fresh clone does
 
 Reads the provided match through games.py (MTAH_DATA_DIR) and labels it with the settings fixed in
 possession/decode.py, which were chosen on Metrica's public sample matches. Then check the file the
 same way the organisers will:
 
-    python evaluation/validate_submission.py evaluation/results/decoder_v1.csv
+    python evaluation/validate_submission.py evaluation/results/submission.csv
     python evaluation/run_evaluation.py
 
 evaluation/results/ is gitignored apart from the organisers' baselines, so the file -- which is
@@ -22,12 +23,12 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 sys.path.insert(0, ROOT)
 import games  # noqa: E402
-from decode import LABELS, label_frames  # noqa: E402
+from decode import LABELS, PARAMS, ball_shake, label_frames  # noqa: E402
 from signals import compute_signals  # noqa: E402
 from tracking import load_competition  # noqa: E402
 
 # Params
-DEFAULT_OUT = os.path.join(ROOT, "evaluation", "results", "decoder_v1.csv")
+DEFAULT_OUT = os.path.join(ROOT, "evaluation", "results", "submission.csv")
 
 
 def write_submission(path, labels):
@@ -41,10 +42,17 @@ def write_submission(path, labels):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--out", default=DEFAULT_OUT, help="where to write the CSV")
+    parser.add_argument("--no-cache", action="store_true",
+                        help="read the raw tracking file instead of the saved copy")
     args = parser.parse_args()
 
-    signals = compute_signals(load_competition())
+    signals = compute_signals(load_competition(cache=not args.no_cache))
     blocks = [(first, last) for _, first, last in games.half_video_blocks(games.GAME)]
     codes = label_frames(signals, blocks)
     write_submission(args.out, LABELS[codes])
+
+    shake = ball_shake(signals, blocks)
+    print("ball shake {:.2f} m/s (limit {}) -> touches {}".format(
+        shake, PARAMS["touch_max_shake"],
+        "used" if shake < PARAMS["touch_max_shake"] else "not used"))
     print("wrote {} ({} rows)".format(args.out, len(codes)))

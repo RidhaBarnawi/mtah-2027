@@ -4,7 +4,6 @@ import xml.etree.ElementTree as ET
 from dataclasses import dataclass
 
 import numpy as np
-from kloppy import metrica
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # the repo's top folder
 sys.path.insert(0, ROOT)   # so Python can find games.py there
@@ -24,6 +23,8 @@ class Tracking:
 
 def load_sample(game, cache=True):
     """Load one of Metrica's public matches (1, 2 or 3) with positions in metres."""
+    from kloppy import metrica   # only the practice matches need kloppy
+
     cache_path = os.path.join(SAMPLE_DIR, "cache", f"Sample_Game_{game}_tracking.npz")
     if cache and os.path.exists(cache_path):   # saved before? then just read it
         return _load(cache_path)

@@ -1,0 +1,6 @@
+# Exact versions the submission was made with (Python 3.12).
+# make_submission.py needs only numpy and pandas.
+numpy==2.5.4
+pandas==3.1.0
+# Only for the practice matches (possession/tracking.load_sample, practice/): reads Metrica's sample data.
+kloppy==3.18.0
